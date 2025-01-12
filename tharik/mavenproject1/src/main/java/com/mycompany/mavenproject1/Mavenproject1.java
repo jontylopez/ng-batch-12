@@ -34,8 +34,8 @@ public class Mavenproject1 {
         
         Person[] persons = new Person[5];
         persons[0] = new Employee();
-        persons[0] = new Student();
-        persons[0] = new Employee();
+        persons[1] = new Student();
+        persons[2] = new Student();
         
         
     }

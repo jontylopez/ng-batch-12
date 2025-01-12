@@ -36,4 +36,9 @@ public class Student extends Person {
     public void setGpa(double gpa) {
         this.gpa = gpa;
     }
+
+    @Override
+    public void test123() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
