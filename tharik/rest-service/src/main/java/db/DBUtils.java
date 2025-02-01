@@ -81,8 +81,8 @@ public class DBUtils {
             try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS); 
                     Statement stmt = conn.createStatement(); 
                     ) {
-                stmt.executeUpdate("INSERT INTO students (id, name, dob) "
-                        + "VALUES ('"+ st.getId()+"', '"+ st.getName() +");");
+                stmt.executeUpdate("INSERT INTO students (id, name) "
+                        + "VALUES ('"+ st.getId()+"', '"+ st.getName() +"');");
                 return true;
             } catch (SQLException e) {
                 e.printStackTrace();
