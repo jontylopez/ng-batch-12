@@ -6,31 +6,83 @@
     <title>CRUD Operations - Students</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #2a4d7f;
+            text-align: center;
+            font-size: 36px;
         }
         table {
             width: 100%;
             margin-top: 20px;
             border-collapse: collapse;
-        }
-        table, th, td {
-            border: 1px solid #ddd;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         th, td {
-            padding: 8px;
+            padding: 12px;
             text-align: left;
         }
-        .form-container {
-            margin-bottom: 20px;
+        th {
+            background-color: #4CAF50;
+            color: white;
         }
-        input[type="text"] {
-            padding: 5px;
-            margin-right: 10px;
+        td {
+            background-color: #f9f9f9;
+        }
+        tr:nth-child(even) td {
+            background-color: #f1f1f1;
         }
         button {
-            padding: 6px 12px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 16px;
+            margin: 4px;
+            border: none;
+            border-radius: 4px;
             cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .form-container, .update-form {
+            background-color: #fff;
+            padding: 20px;
+            margin: 10px auto;
+            width: 400px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .form-container input, .update-form input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        .update-form input:disabled {
+            background-color: #f1f1f1;
+        }
+        .update-form {
+            display: none; /* Hidden by default */
+        }
+        .form-container button {
+            background-color: #008CBA;
+        }
+        .form-container button:hover {
+            background-color: #007B9F;
+        }
+        .cancel-btn {
+            background-color: #f44336;
+        }
+        .cancel-btn:hover {
+            background-color: #d32f2f;
         }
     </style>
 </head>
@@ -41,6 +93,14 @@
         <input type="text" id="studentId" placeholder="Enter student ID">
         <input type="text" id="studentName" placeholder="Enter student name">
         <button onclick="createStudent()">Create Student</button>
+    </div>
+
+    <div class="update-form" id="updateForm">
+        <h3>Edit Student</h3>
+        <input type="text" id="updateStudentId" disabled>
+        <input type="text" id="updateStudentName">
+        <button onclick="submitUpdate()">Update Student</button>
+        <button class="cancel-btn" onclick="cancelUpdate()">Cancel</button>
     </div>
 
     <h3>Student List</h3>
@@ -73,7 +133,7 @@
                     <td>${student.id}</td>
                     <td>${student.name}</td>
                     <td>
-                        <button onclick="updateStudent(${student.id}, '${student.name}')">Edit</button>
+                        <button onclick="editStudent(${student.id}, '${student.name}')">Edit</button>
                         <button onclick="deleteStudent(${student.id})">Delete</button>
                     </td>
                 `;
@@ -105,21 +165,34 @@
             }
         }
 
-        // Update an existing student
-        async function updateStudent(id, currentName) {
-            const newName = prompt('Update student name:', currentName);
-            if (newName && newName !== currentName) {
-                const updatedStudent = { id, name: newName };
-                const response = await fetch(`${apiUrl}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(updatedStudent)
-                });
+        // Display the update form with pre-filled values
+        function editStudent(id, name) {
+            document.getElementById('updateStudentId').value = id;
+            document.getElementById('updateStudentName').value = name;
+            document.getElementById('updateForm').style.display = 'block'; // Show the form
+        }
 
-                if (response.ok) {
-                    getStudents();
-                }
+        // Submit the updated student
+        async function submitUpdate() {
+            const id = document.getElementById('updateStudentId').value;
+            const name = document.getElementById('updateStudentName').value;
+
+            const updatedStudent = { id, name };
+            const response = await fetch(apiUrl, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedStudent)
+            });
+
+            if (response.ok) {
+                getStudents();
+                cancelUpdate(); // Hide the update form
             }
+        }
+
+        // Cancel the update and hide the form
+        function cancelUpdate() {
+            document.getElementById('updateForm').style.display = 'none'; // Hide the form
         }
 
         // Delete a student
