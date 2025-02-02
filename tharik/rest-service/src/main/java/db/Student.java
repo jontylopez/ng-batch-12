@@ -11,18 +11,15 @@ package db;
 public class Student {
     private int id;
     private String name;
-    private String dob;
 
     public Student() {
         this.id = -1;
         this.name = "";
-        this.dob = "";
     }
 
-    public Student(int id, String name, String dob) {
+    public Student(int id, String name) {
         this.id = id;
         this.name = name;
-        this.dob = dob;
     }
 
     
@@ -41,13 +38,5 @@ public class Student {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDob() {
-        return dob;
-    }
-
-    public void setDob(String dob) {
-        this.dob = dob;
-    }     
+    }    
 }
